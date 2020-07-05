@@ -18,11 +18,11 @@ export default [
         title: "pageC",
         link: "/sys/pageC",
         key: "pageC",
-        icon: "pageC_icon"
+        icon: "ant-design"
     },{
         title: "pageD",
         link: "/sys/pageD",
         key: "pageD",
-        icon: "pageD_icon"
+        icon: "weibo"
     },
 ]

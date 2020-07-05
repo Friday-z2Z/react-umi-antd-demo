@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import isEqual from 'lodash/isEqual';
 import Breadcrumb from '@/components/Breadcrumb';
-import styles from './index.less'
+// import styles from './index.less'
 
 class GlobalPageHeader extends React.Component {
     constructor(props) {

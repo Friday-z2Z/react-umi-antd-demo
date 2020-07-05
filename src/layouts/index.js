@@ -2,8 +2,8 @@
 import PlatformLayout from './platform';
 
 function Index(props) {
-    const { location, children } = props;
-    const { pathname } = location;
+    const { children } = props;
+    // const { pathname } = location;
     // if (
     //   pathname === '/' ||
     //   pathname === '/login' ||

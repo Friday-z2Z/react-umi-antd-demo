@@ -42,7 +42,7 @@
     ├── config.js                       // umi 配置，同 .umirc.js，二选一
 └── src/                                // 源码目录，可选
     ├── assets                          // 公共的文件（如图片，js等此文件夹里的文件会经过webpack打包处理）
-    ├── components/                      // 项目组件
+    ├── components/                     // 项目组件
     ├── layouts/                        // 全局布局
         ├── main/index.js               // 系统内部布局
         ├── login/index.js              // 登录页布局

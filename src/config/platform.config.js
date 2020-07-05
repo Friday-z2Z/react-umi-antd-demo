@@ -7,7 +7,7 @@ module.exports = {
     // 系统名称
     sysName: 'react-demo',
     // 是否开启菜单权限校验 trur原始菜单与返回菜单比对形成权限菜单 false原始菜单
-    menuPermission: true,
+    menuPermission: false,
     // table默认一页条数
     pageSize: 10,
     // iconFont 地址
@@ -17,7 +17,7 @@ module.exports = {
         pathname: '/sys/pageA',
         state: {
             key: 'pageA',
-            pathtitles: [{ title: 'pageA', icon: 'pageA_icon' }],
+            pathtitles: [{ title: 'pageA', icon: 'font-colors' }],
         }
     },
 };

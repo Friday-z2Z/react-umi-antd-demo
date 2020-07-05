@@ -1,6 +1,6 @@
 import * as api from '../services';
 import orginalData from '@/config/menu.config';
-import { formatNumer, munesFilter, flattenMenu } from '@/utils/_';
+import { munesFilter, flattenMenu } from '@/utils/_';
 import { menuPermission } from '@/config/platform.config';
 
 export default {

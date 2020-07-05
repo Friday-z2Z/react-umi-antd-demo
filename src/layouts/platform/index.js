@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
+// import router from 'umi/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -74,7 +74,7 @@ class Platform extends PureComponent {
     //         window.scrollTo(0, 0);
     //     }
     // }
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(nextProps) {
         const { isMobile } = nextProps;
         // 如果是手机端设置侧边栏状态默认收缩
         if (isMobile !== this.props.isMobile && isMobile !== this.state.collapsed) {
@@ -138,7 +138,7 @@ class Platform extends PureComponent {
              */
             <ContainerQuery query={query}>
                 {params => (
-                    /**react上下文 */
+                    // react上下文
                     <Context.Provider value={this.getContext(params)}>
                         {/* layout布局 */}
                         <Layout className={classNames(styles.wrap, params)}>
