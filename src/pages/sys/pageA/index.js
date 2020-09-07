@@ -4,6 +4,7 @@
 import React from 'react'
 import { Button, Message } from 'antd'
 import Context from '@/layouts/Context';
+// import { connect } from 'echarts';
 // import styles from './index.less'
 
 // import { add } from './math'
@@ -13,11 +14,13 @@ class pageA extends React.Component {
         this.state = {}
     }
     // 上下文
-    static contextType = Context
+    // static contextType = Context
 
     handleClick = ()=>{
+
         import('./math').then(math=>{
             Message.success(math.add(1,2))
+            // Message.success(this.context.location.pathname)
         })
     }
 
@@ -28,4 +31,5 @@ class pageA extends React.Component {
     }
 }
 
+// pageA.contextType = Context
 export default pageA;

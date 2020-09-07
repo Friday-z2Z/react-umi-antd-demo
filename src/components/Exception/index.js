@@ -2,9 +2,8 @@ import React, { PureComponent } from 'react';
 import { Link } from 'umi';
 import PropTypes from 'prop-types';
 
-import { Button } from 'antd';
+import { Result, Button } from 'antd';
 import config from './typeConfig';
-import styles from './index.less';
 
 export default class Exception extends PureComponent {
     static defaultProps = {
@@ -24,29 +23,19 @@ export default class Exception extends PureComponent {
             type,
             title,
             desc,
-            redirect,
-            img
+            redirect
         } = this.props;
         const pageType = type in config ? type : '404';
         const pageTitle = title in config ? type : '404';
         return (
-            <div className={styles.exception}>
-                <div className={styles.imgBlock}>
-                    <div
-                        className={styles.imgEle}
-                        style={{ backgroundImage: `url(${img || config[pageType].img})` }}
-                    />
-                </div>
-                <div className={styles.content}>
-                    <h1>{pageTitle || config[pageType].title}</h1>
-                    <div className={styles.desc}>{desc || config[pageType].desc}</div>
-                    <div className={styles.actions}>
-                        <Link to={redirect}>
-                            <Button type="primary">{backText}</Button>
-                        </Link>
-                    </div>
-                </div>
-            </div>
+            <Result
+                status={pageType}
+                title={pageTitle}
+                subTitle={desc || config[pageType].desc}
+                extra={<Link to={redirect}>
+                    <Button type="primary">{backText}</Button>
+                </Link>}
+            />
         );
     }
 }
@@ -59,5 +48,4 @@ Exception.propTypes = {
     title: PropTypes.string,
     desc: PropTypes.string,
     redirect: PropTypes.object,
-    img: PropTypes.string
 };

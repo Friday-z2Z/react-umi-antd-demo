@@ -8,6 +8,7 @@ module.exports = {
     sysName: 'react-demo',
     // 是否开启菜单权限校验 trur原始菜单与返回菜单比对形成权限菜单 false原始菜单
     menuPermission: false,
+    pageNum: 1,
     // table默认一页条数
     pageSize: 10,
     // iconFont 地址

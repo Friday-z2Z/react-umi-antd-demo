@@ -74,7 +74,10 @@ class Platform extends PureComponent {
     //         window.scrollTo(0, 0);
     //     }
     // }
-    componentDidUpdate(nextProps) {
+
+    // componentWillReceiveProps 改为componentDidUpdate后逻辑需要修改
+    componentWillReceiveProps(nextProps) {
+        
         const { isMobile } = nextProps;
         // 如果是手机端设置侧边栏状态默认收缩
         if (isMobile !== this.props.isMobile && isMobile !== this.state.collapsed) {
