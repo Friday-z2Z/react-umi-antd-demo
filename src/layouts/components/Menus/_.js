@@ -9,11 +9,11 @@ const _queryKeysByPath = (pathname, menusData) => {
         if (value === undefined || value === null) return {};
         data = cloneDeep(data);
         for (const item of data) {
-            const { title, link, children } = item;
-            if (children && children.length > 0) {
-                return searchMenu(value, children, pathtitles.concat(title));
-            } else if (value === link.replace(reg, '')) {
-                return { ...item, pathtitles: pathtitles.concat(title) };
+            const { name, url, list } = item;
+            if (list && list.length > 0) {
+                return searchMenu(value, list, pathtitles.concat(name));
+            } else if (value === url.replace(reg, '')) {
+                return { ...item, pathtitles: pathtitles.concat(name) };
             }
         }
     };
@@ -21,6 +21,7 @@ const _queryKeysByPath = (pathname, menusData) => {
     return { key: undefined, ...result };
 };
 export const queryKeysByPath = memoizeOne(_queryKeysByPath, isEqual);
+
 const _testMenusData = (item, err) => {
     const { title, icon, key, link, url, children } = item;
     if (!(title && key)) {

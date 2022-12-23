@@ -4,6 +4,8 @@ import isEqual from 'lodash/isEqual';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import PropTypes from 'prop-types';
+import { isURL } from '@/utils/validate'
+import './index.less'
 
 import { Menu } from 'antd';
 import { Icon, Consumer } from '@/components';
@@ -28,12 +30,12 @@ class MainMenu extends PureComponent {
         const { mode } = this.props;
         return rows.map((row) => {
             if (row === undefined) return false;
-            const { title: name, link = "", key = link, query, icon = "bars", children, target = '_blank', ...restState } = row;
-            if (children && children.length > 0) {
-                const subMenu = self.renderMenu(children, pathtitles.concat(name));
+            const { name, url = "", menuId = '', query, icon = "bars", list, ...restState } = row;
+            if (list && list.length > 0) {
+                const subMenu = self.renderMenu(list, pathtitles.concat(name));
                 return (
                     <SubMenu
-                        key={key}
+                        key={menuId}
                         text={name}
                         title={<span><Icon type={icon} />{mode === 'inline' ? <span>{name}</span> : null}</span>}
                     >
@@ -41,27 +43,26 @@ class MainMenu extends PureComponent {
                     </SubMenu>
                 );
             } else {
-                const { url: href } = restState;
-                if (link === '' && href) {
+                if (isURL(url)) {
                     return (
                         <Item
-                            key={href.slice(-5)}
+                            key={url}
                             text={name}
                         >
-                            <a href={href} target={target}>
-                                <Icon type={icon} />
+                            <Link to={{ pathname: `/iframe`, query, title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }}>
+                                <Icon type={icon}/>
                                 <span>{name}</span>
-                            </a>
+                            </Link>
                         </Item>
                     );
                 }
                 return (
                     <Item
-                        key={key}
+                        key={url}
                         text={name}
                     >
-                        <Link to={{ pathname: link, query, state: { ...restState, key, pathtitles: pathtitles.concat(name) } }}>
-                            <Icon type={icon} />
+                        <Link to={{ pathname: url, query, title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }}>
+                            <Icon type={icon}/>
                             <span>{name}</span>
                         </Link>
                     </Item>
@@ -69,25 +70,37 @@ class MainMenu extends PureComponent {
             }
         });
     }
+
+    onOpenChange = (openKeys) => {
+        this.props.dispatch({
+            type: 'menu/setOpenKeys',
+            payload: {
+                openKeys
+            }
+        })
+    }
+
     render() {
-        const { location, defaultKey, menuTheme, menusData, mode } = this.props;
-        const { pathname, state: pathState } = location;
+        const { defaultKey, menuTheme, menusData, mode, activeTabRoute, openKeys } = this.props;
+        const { pathname, state: pathState } = activeTabRoute;
         const menus = this.renderMenu(menusData);
+        // 当前选中的菜单key
         const { key } = pathState || queryKeysByPath(pathname, menusData);
         return (
             <Menu
                 selectedKeys={[key || defaultKey]}
+                openKeys={openKeys}
                 mode={mode}
                 theme={menuTheme}
-                style={{ overflowY: 'auto', height: "calc(100vh - 70px)" }}
-                className="progressbar"
+                onOpenChange={this.onOpenChange}
+                style={{ overflowY: 'auto', fontSize:'20px', height: "calc(100vh - 70px)" }}
             >
                 {menus}
             </Menu>
         );
     }
 }
-export default connect(({ menu: { menusData } }) => ({ menusData }))(Consumer(MainMenu));
+export default connect(({ menu }) => ({ ...menu }))(Consumer(MainMenu));
 
 MainMenu.propTypes = {
     menusData: PropTypes.arrayOf(function (propValue, key, componentName, location, propFullName) {

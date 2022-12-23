@@ -1,0 +1,39 @@
+.tabWrap{
+	height: 40px;
+	padding: 0 12px;
+	display: flex;
+	justify-content: space-between;
+	.tabs{
+		flex: 1;
+	}
+	.tabButton{
+		color: @base-color;
+	}
+}
+:global{
+	.ant-tabs{
+		&.ant-tabs-card{
+			.ant-tabs-card-bar{
+				.ant-tabs-tab{
+					border: none;
+					&:hover{
+						background: @primary-color-op;
+						color: #fff;
+					}
+					&.ant-tabs-tab-active{
+						background-color: @primary-color;
+						color: #fff;
+						.anticon-close{
+							color: #fff;
+						}
+					}
+				}
+			}
+		}
+		.ant-tabs-bar{
+			margin: 0;
+			border: none;
+		}
+	}
+	
+}

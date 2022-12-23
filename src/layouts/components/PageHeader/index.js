@@ -1,49 +1,57 @@
-import React, { Fragment } from 'react'
-import { getNowFormatTime } from '@/utils/_'
-import styles from './index.less'
+import React, { Fragment } from 'react';
+import { connect } from 'dva';
+import { Avatar, Menu, Dropdown, Modal } from 'antd';
+import styles from './index.less';
 
 class PageHeader extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            date: getNowFormatTime()
-        }
-    }
+    handleClick = ({ key }) => {
+        this[key]();
+    };
 
-    componentDidMount() {
-        this.timer = setInterval(
-            () => this.tick(),
-            1000
-        );
-    }
+    editPsw = () => {};
 
-    componentWillUnmount() {
-        clearInterval(this.timer)
-    }
-
-    tick = () => {
-        this.setState({
-            date: getNowFormatTime()
+    logout = () => {
+        const that = this
+        Modal.confirm({
+            title: `确认退出吗？`,
+            centered: true,
+            onOk() {
+                that.props.dispatch({
+                    type: 'global/logout',
+                });
+            },
         });
-    }
+    };
 
     render() {
-        const { date } = this.state
-        const { children } = this.props
-        const currentTime = (
-            <div className={styles.currentTime}>
-                { date }
-            </div>
-        )
+        const {
+            children,
+            user: { username },
+        } = this.props;
+        const menu = (
+            <Menu onClick={this.handleClick}>
+                <Menu.Item key="editPsw">修改密码</Menu.Item>
+                <Menu.Item key="logout">退出</Menu.Item>
+            </Menu>
+        );
         return (
             <div className={styles.pageHeader}>
                 <Fragment>
-                    { children }
-                    { currentTime }
+                    {children}
+                    <div className={styles.user}>
+                        <Dropdown overlay={menu} trigger={['click']}>
+                            <Avatar
+                                className={styles.avatar}
+                                icon="user"
+                            />
+                        </Dropdown>
+                        {username}
+                    </div>
                 </Fragment>
             </div>
         );
     }
 }
-
-export default PageHeader;
+export default connect(({ global }) => ({
+    ...global,
+}))(PageHeader);

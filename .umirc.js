@@ -1,14 +1,20 @@
-// import { resolve } from "path";
-import theme from "./src/config/theme.config"
+import { resolve } from "path";
+import _default from './src/theme.config/default';
+// import * as theme from './src/theme.config/tiffany'; // 蒂芙尼主题
+// import * as theme from './src/theme.config/dark-night-red'; // 暗夜红主题
+import * as theme from './src/theme.config/young'; // 黄绿青春主题
 
 export default {
     base: '/',
-    treeShaking: true,//用于描述移除 JavaScript 上下文中的未引用代码
-    //   history: 'hash',//hash路由
-    //   hash: true,//生成hash文件名
-    //   disableRedirectHoist: true,//禁用 redirect 上提。
+    treeShaking: true, //用于描述移除 JavaScript 上下文中的未引用代码
+    // history: 'hash', //hash路由
+    // hash: true,//生成hash文件名
+    // base:'./',
+    publicPath: './',
+    // disableRedirectHoist: true, //禁用 redirect 上提。
     // devtool: 'source-map',//生成map文件
-    targets: {//兼容浏览器版本
+    targets: {
+        //兼容浏览器版本
         // ie: 11,
     },
     // 配置模块不打入代码
@@ -20,52 +26,59 @@ export default {
     // routes: [
     //     {
     //         path: '/',
-    //         component: '../layouts/index',
+    //         component: '@/layouts/index',
     //         routes: [
-    //             { path: '/', component: '../pages/index' }
+    //             { path: '/', component: '../pages/sys/index' },
     //         ]
     //     }
     // ],
     plugins: [
-        // ref: https://umijs.org/plugin/umi-plugin-react.html
-        ['umi-plugin-react', {
-            antd: true,
-            dva: true,
-            dynamicImport: {
-                webpackChunkName: true,
-                loadingComponent: './components/PageLoading/index.js'
+        [
+            'umi-plugin-react',
+            {
+                antd: true,
+                dva: true,
+                dynamicImport: {
+                    webpackChunkName: true,
+                    loadingComponent: './components/PageLoading/index.js',
+                },
+                title: '收费站拥堵智能监测系统',
+                dll: true,
+                locale: {
+                    enable: true,
+                    default: 'zh-CN', //'en-US',
+                },
+                routes: {
+                    exclude: [
+                        /models\//,
+                        /services\//,
+                        /model\.(t|j)sx?$/,
+                        /service\.(t|j)sx?$/,
+                        /components\//,
+                    ],
+                },
+                // cdn
+                //   scripts: [
+                //     { src: 'https://cdn.bootcss.com/d3/5.9.2/d3.min.js' },
+                //   ],
             },
-            title: 'demo-umi-2X',
-            dll: true,
-            locale: {
-                enable: true,
-                default: 'zh-CN',//'en-US',
-            },
-            routes: {
-                exclude: [
-                    /models\//,
-                    /services\//,
-                    /model\.(t|j)sx?$/,
-                    /service\.(t|j)sx?$/,
-                    /components\//,
-                ],
-            },
-            // cdn
-            //   scripts: [
-            //     { src: 'https://cdn.bootcss.com/d3/5.9.2/d3.min.js' },
-            //   ],
-        }],
+        ],
     ],
-    theme,
-    //   alias: {
+    theme: { ..._default, ...theme },
+    // alias: {
     //     "@": resolve(__dirname, "../src"),
-    //     '@utils': resolve(__dirname, "../src/utils"),
-    //   },
+    // },
     proxy: {
-        "/api": {
-            target: "http://10.85.94.238:10660",
+        // '/api': {
+        //     target: 'http://10.85.94.238:10660',
+        //     changeOrigin: true,
+        //     pathRewrite: { '^/api': '/' },
+        // },
+        '/api': {
+            target: 'http://192.168.2.24:9105',
+            // target: 'http://192.168.1.174:48081',
             changeOrigin: true,
-            pathRewrite: { "^/api": "/" }
+            pathRewrite: { '^/api': '/api' },
         }
     },
-}
+};

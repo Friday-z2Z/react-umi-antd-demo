@@ -1,0 +1,44 @@
+:global {
+    .ant-menu {
+        background: @base-color;
+        &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+        .ant-menu-item {
+            a {
+                display: flex;
+                align-items: center;
+            }
+        }
+        .ant-menu-submenu {
+            &-selected {
+                & > .ant-menu-submenu-title {
+                    color: @primary-color;
+                    &:hover {
+                        .ant-menu-submenu-arrow {
+                            &::before,&::after {
+                                background: @primary-color;
+                            }
+                        }
+                    }
+                    .ant-menu-submenu-arrow {
+                        &::before,&::after {
+                            background: @primary-color;
+                        }
+                    }
+                }
+            }
+            .ant-menu-submenu-title {
+                > span {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+            .ant-menu-sub {
+                background: @base-color;
+                box-shadow: none;
+            }
+        }
+    }
+}

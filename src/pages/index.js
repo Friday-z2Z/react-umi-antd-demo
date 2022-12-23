@@ -1,3 +1,16 @@
 import Redirect from 'umi/redirect';
+import { connect } from 'dva';
 
-export default () => <Redirect to={{ pathname: '/sys', state: {} }} />
+function mapStateToProps({ menu }) {
+    return {
+        ...menu
+    };
+}
+
+export default connect(mapStateToProps)(props => {
+    const { flattenMenuData } = props
+    return (
+        <Redirect to={flattenMenuData[0] || {}} />
+    )
+})
+

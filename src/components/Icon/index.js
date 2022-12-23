@@ -4,20 +4,27 @@ import { iconUrl } from '@/config/platform.config';
 import { Icon } from 'antd';
 
 function Index(props) {
-    const { type = "bars", style = {}, spin = false } = props;
-    if (type.indexOf("icon") > -1) {
-        const MyIcon = Icon.createFromIconfontCN({
-            scriptUrl: iconUrl, // 在 iconfont.cn 上生成
-        });
-        return (
-            <MyIcon type={type} style={style} />
-        );
-    } else {
+    const { type = 'bars' } = props;
+    // if (type.indexOf("anticon") > -1) {
+    //     const MyIcon = Icon.createFromIconfontCN({
+    //         scriptUrl: iconUrl, // 在 iconfont.cn 上生成
+    //     });
+    //     return (
+    //         <MyIcon {...props} />
+    //     );
+    // } else {
 
-        return (
-            <Icon type={type} style={style} spin={spin} />
-        );
-    }
+    //     return (
+    //         <Icon {...props} />
+    //     );
+    // }
+
+
+    // 统一使用iconfont.js  type在config中管理
+    const MyIcon = Icon.createFromIconfontCN({
+        scriptUrl: iconUrl, // 在 iconfont.cn 上生成
+    });
+    return <MyIcon style={{ fontSize: '20px' }} {...props} type={'anticon-' + type} />;
 }
 export default Index;
 Index.propTypes = {

@@ -10,7 +10,7 @@ import { Layout, BackTop, Icon } from 'antd';
 import { Exception } from '@/components';
 import Menus from '../components/Menus';
 import Authorized from '../components/Authorized';
-import GlobalPageHeader from '@/components/GlobalPageHeader';
+import GlobalPageHeader from '../components/GlobalPageHeader';
 import PageHeader from '../components/PageHeader';
 import Logo from '../components/Logo'
 
@@ -37,10 +37,10 @@ const _getKey = (pathname) => {
  * 权限页，当没有权限时跳转403页面
  */
 const Exception403 = <Exception
-    type={403}
+    type={404}
     backText={'返回首页'}
-    title={'403'}
-    desc={'抱歉，你访问的页面没有权限'}
+    title={'404'}
+    desc={'抱歉，你访问的页面已丢失'}
 />;
 
 class Platform extends PureComponent {
@@ -63,39 +63,27 @@ class Platform extends PureComponent {
         if (isMobile !== collapsed) {
             this.setState({ collapsed: isMobile });
         }
-        
+
         // 获取菜单列表
         dispatch({
             type: 'menu/getMenuData',
         })
+        // 获取用户信息
+        dispatch({
+            type: 'global/getUserInfo',
+        })
     }
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.location !== prevProps.location) {
-    //         window.scrollTo(0, 0);
-    //     }
-    // }
 
     // componentWillReceiveProps 改为componentDidUpdate后逻辑需要修改
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         
         const { isMobile } = nextProps;
         // 如果是手机端设置侧边栏状态默认收缩
         if (isMobile !== this.props.isMobile && isMobile !== this.state.collapsed) {
             this.setState({ collapsed: isMobile });
         }
+    }
 
-    }
-    componentWillUnmount() {
-        const { dispatch } = this.props;
-        // 组件卸载时清除系统信息
-        dispatch({
-            type: 'global/clear',
-        });
-        // 组件卸载时清除菜单信息
-        dispatch({
-            type: 'menu/clear',
-        });
-    }
     /**
      * 设置侧边栏状态
      */
@@ -120,9 +108,8 @@ class Platform extends PureComponent {
     render() {
         // 侧边栏状态
         const { collapsed } = this.state;
-        const { location, menusData } = this.props;
-        const { pathname, state: pathstate } = location;
-
+        const { activeTabRoute, menusData } = this.props;
+        const { pathname, state: pathstate } = activeTabRoute;
         // // 获取breadcrumb数据
         // const [menu = {}] = flattenMenuData.filter(item => item.link === pathname);
         // const { pathtitles = [] } = menu;
@@ -147,6 +134,7 @@ class Platform extends PureComponent {
                         <Layout className={classNames(styles.wrap, params)}>
                             {/* 侧边栏 */}
                             <Sider
+                                width={280}
                                 trigger={null}
                                 collapsible
                                 collapsed={collapsed}
@@ -156,21 +144,21 @@ class Platform extends PureComponent {
                                 <Logo collapsed={collapsed} />
                                 {/* 菜单栏 */}
                                 <Menus
-                                    location={location}
+                                    activeTabRoute={activeTabRoute}
                                     menusData={menusData}
                                     defaultKey={defaultKey}
                                     collapsed={collapsed}
                                 />
                             </Sider>
                             {/* 系统主体部分 */}
-                            <Layout  className={styles.container} style={{ marginLeft: collapsed ? 80 : 200 }}>
+                            <Layout  className={styles.container} style={{ marginLeft: collapsed ? 80 : 280 }}>
                                 {/* 系统头部 */}
                                 <Header className={styles.contentHeader}>
                                     {/* 包含面包屑 */}
                                     <GlobalPageHeader {...this.props}>
                                         {/* 菜单切换和用户信息 */}
-                                        <PageHeader>
-                                            <div style={{ width: 100 }}>
+                                        <PageHeader {...this.props}>
+                                            <div style={{ width: 50 }}>
                                                 <Icon
                                                     className={styles.trigger}
                                                     type={collapsed ? 'menu-unfold' : 'menu-fold'}

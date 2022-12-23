@@ -3,10 +3,12 @@
  * ref: https://github.com/umijs/umi/issues/1109#issuecomment-423380125
  */
 
+const path = require('path');
+
 module.exports = {
-  resolve: {
-    alias: {
-      '@': require('path').resolve(__dirname, 'src'),
-    },
-  },
+    resolve: {
+        alias: {
+            '@': require('path').resolve(__dirname, 'src'),
+        },
+    }
 };

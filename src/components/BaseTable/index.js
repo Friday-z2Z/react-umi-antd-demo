@@ -1,18 +1,26 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'antd'
-import styles from './index.less'
+import { Table } from 'antd';
+import { getTableScroll } from '@/utils/_';
+
+// import styles from './index.less'
 
 class BaseTable extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {};
     }
+
     render() {
-
-
+        
+        const { extraHeight = 0 } = this.props;
         return (
-            <Table {...this.props} >{ this.props.children }</Table>
+            <Table
+                scroll={{ y: getTableScroll({ extraHeight }) }}
+                {...this.props}
+            >
+                {this.props.children}
+            </Table>
         );
     }
 }
@@ -24,4 +32,8 @@ BaseTable.propTypes = {
     columns: PropTypes.array,
     // 数据源
     dataSource: PropTypes.array,
-}
+    // 额外高度 分页
+    extraHeight: PropTypes.number,
+    // 是否勾选
+    selection: PropTypes.bool
+};

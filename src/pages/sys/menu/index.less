@@ -1,0 +1,42 @@
+.tag {
+    margin: 0;
+    color: #fff;
+    &-0 {
+        background: @base-color;
+        border: 1px solid @base-color;
+    }
+    &-1 {
+        background: @primary-color;
+        border: 1px solid @primary-color;
+    }
+    &-2 {
+        background: @match-color;
+        border: 1px solid @match-color;
+    }
+}
+
+.operateModalIconPopover {
+    max-width: 500px;
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    .icon {
+        cursor: pointer;
+        margin: 3px 5px;
+		transition: all 0.2s;
+		&.iconActive{
+			color: #1890ff;
+		}
+        &:hover {
+            color: #1890ff;
+        }
+    }
+}
+
+.selectTree{
+    width: 280px;
+    max-height: 350px;
+    margin-top: 10px;
+    overflow-y: auto;
+}

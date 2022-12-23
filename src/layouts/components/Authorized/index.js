@@ -4,8 +4,13 @@ import { PureComponent } from 'react';
  */
 export default class Authorized extends PureComponent {
     render() {
-        const { children, noMatch, diffMenuData, location: { pathname } } = this.props;
-        const [res] = diffMenuData.filter(item => item.link === pathname);
-        return res ? noMatch : children;
+        const {
+            children,
+            noMatch,
+            route: { routes },
+            location: { pathname },
+        } = this.props;
+        const [res] = routes.filter(item => item.path === pathname);
+        return res ? children : noMatch;
     }
 }

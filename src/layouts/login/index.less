@@ -1,0 +1,63 @@
+.loginBgWrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(38, 50, 56, 0.6);
+    overflow: hidden;
+    &::before {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        content: '';
+        background-image: url('@/assets/common/img/login-bg.png');
+        background-size: cover;
+    }
+    .loginWrapper {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        background-color: transparent;
+        .login {
+            color: #fff;
+            font-size: 32px;
+            width: 480px;
+            position: absolute;
+            left: 50%;
+            margin-left: -240px;
+            margin-top: 200px;
+            > p {
+                font-family: 'YouShe';
+				text-align: center;
+            }
+            .content {
+				width: 100%;
+				padding: 40px 80px;
+				margin: auto;
+				position: relative;
+				&::before{
+					content: '';
+					display: inline-block;
+					position: absolute;
+					left: 0;
+					top: 0;
+					width: 100%;
+					height: 100%;
+					border-radius: 8px;
+					// filter: blur(2px);
+					filter: brightness(0.30);
+					background: rgba(204, 202, 202, 0.5);
+				}
+            }
+        }
+    }
+}
