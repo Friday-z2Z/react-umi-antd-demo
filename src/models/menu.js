@@ -19,7 +19,7 @@ export default {
                 const cacheMenusData = JSON.parse(localStorage.getItem('menusData'))
                 const matchRoute =  (cacheMenusData || []).filter(item => item.pathname === location.pathname)[0] || location
                 const { pathname, state } = matchRoute;
-                console.log('location', matchRoute)
+                console.log('location', location, matchRoute)
                 if (pathname && pathname.substring(1) && state && state.key) {
                     dispatch({
                         type: 'cacheRoute',

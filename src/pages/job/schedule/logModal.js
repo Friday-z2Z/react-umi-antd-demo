@@ -158,7 +158,7 @@ class Log extends React.Component {
 							)}
 						/>
 						<Column
-							title="耗时(单位: 毫秒)"
+							title="耗时(毫秒)"
 							align="center"
 							dataIndex="times"
 							key="times"

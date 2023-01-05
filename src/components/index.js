@@ -1,5 +1,5 @@
 import Exception from './Exception';
-import Icon from './Icon';
+import BaseIcon from './BaseIcon';
 import Consumer from './Consumer';
 import BaseTable from './BaseTable'
 import BasePagination from './BasePagination'
@@ -8,7 +8,7 @@ import BaseModal from './BaseModal'
 
 export {
     Exception,
-    Icon,
+    BaseIcon,
     Consumer,
     BaseTable,
     BasePagination,

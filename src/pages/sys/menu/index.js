@@ -4,8 +4,8 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { BasePanel, BaseTable, Icon } from '@/components';
-import { Button, Table, Divider, Tag } from 'antd';
+import { BasePanel, BaseTable, BaseIcon } from '@/components';
+import { Button, Table, Divider, Tag, message, Modal } from 'antd';
 import * as API_MENU from '@/services/sys/menu';
 import { flattenMenuToTree } from '@/utils/_';
 import UpdateModal from './updateModal';
@@ -39,7 +39,7 @@ class MenuConfig extends React.Component {
         this.getMenuList()
     }
 
-    beforeOpen = (record={}) => {
+    beforeOpen = (record={menuId: 0}) => {
         this.setState({
             modalForm: {...this.props.modalForm, ...record}
         })
@@ -60,7 +60,8 @@ class MenuConfig extends React.Component {
 
     handleOk = async() => {
         const values = await this.updateModal.handleSubmit();
-        API_MENU.menuUpdate(values).then(res=>{
+        API_MENU.menuUpdate(values).then(()=>{
+            message.success(`${values.menuId === 0?'新增':'修改'}成功`)
             this.handleCancel()
             this.getMenuList()
         })
@@ -81,6 +82,20 @@ class MenuConfig extends React.Component {
                 data: listData,
                 loading: false
             });
+        });
+    }
+
+    handleDel = record => {
+        const that = this;
+        Modal.confirm({
+            title: `确定对【id=${record.menuId}】进行【删除】操作吗？`,
+            centered: true,
+            onOk() {
+                API_MENU.del(record.menuId).then(() => {
+					message.success('删除成功')
+                    that.getMenuList();
+                });
+            },
         });
     }
 
@@ -107,7 +122,7 @@ class MenuConfig extends React.Component {
                         width="150px"
                         dataIndex="icon"
                         key="icon"
-                        render={(text, record) => <Icon type={record.icon} />}
+                        render={(text, record) => <BaseIcon type={record.icon} />}
                     />
                     <Column
                         title="类型"
@@ -137,7 +152,7 @@ class MenuConfig extends React.Component {
                             <span>
                                 <Button type="link" onClick={(e)=>this.beforeOpen(record, e)}>修改</Button>
                                 <Divider type="vertical" />
-                                <Button type="link" style={{color: '#ff4d4f'}}>删除</Button>
+                                <Button type="link" style={{color: '#ff4d4f'}} onClick={e => this.handleDel(record, e)}>删除</Button>
                             </span>
                         )}
                     />

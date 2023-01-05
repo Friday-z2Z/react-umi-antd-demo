@@ -27,6 +27,8 @@ class PageHeader extends React.Component {
         const {
             children,
             user: { username },
+            style,
+            prefix
         } = this.props;
         const menu = (
             <Menu onClick={this.handleClick}>
@@ -35,10 +37,11 @@ class PageHeader extends React.Component {
             </Menu>
         );
         return (
-            <div className={styles.pageHeader}>
+            <div className={styles.pageHeader} style={style}>
                 <Fragment>
-                    {children}
+                    {prefix}
                     <div className={styles.user}>
+                        {children}
                         <Dropdown overlay={menu} trigger={['click']}>
                             <Avatar
                                 className={styles.avatar}

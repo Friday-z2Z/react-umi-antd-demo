@@ -4,8 +4,9 @@
  */
 
 import React from 'react';
+import { connect } from 'dva';
 import { BasePanel, BaseTable, BasePagination } from '@/components';
-import { Modal, Form, Input, Button, Table, Divider, Tag, message } from 'antd';
+import { Modal, Form, Input, Button, Table, Divider, message } from 'antd';
 import UpdateModal from './updateModal';
 import * as API_ROLE from '@/services/sys/role';
 
@@ -47,7 +48,14 @@ class Role extends React.Component {
         });
     };
 
-    beforeOpen = (record = {}) => {
+    beforeOpen = async(record = {}) => {
+        await this.props.dispatch({
+            type: 'role/getMenu'
+        })
+        await this.props.dispatch({
+            type: 'role/getCheckedIds',
+            payload: { roleId: record.roleId }
+        })
         this.setState({
             modalForm: { ...record },
             visible: true,
@@ -96,7 +104,7 @@ class Role extends React.Component {
             title: `确定对【id=${roleIds.join(',')}】进行【删除】操作吗？`,
             centered: true,
             onOk() {
-                API_ROLE.del({ roleIds }).then(() => {
+                API_ROLE.del(roleIds).then(() => {
 					message.success('删除成功')
                     that.handleGetList();
                 });
@@ -240,4 +248,6 @@ class Role extends React.Component {
 }
 
 const RoleWrapper = Form.create()(Role);
-export default RoleWrapper;
+export default connect(({ role }) => ({
+    ...role,
+}))(RoleWrapper);

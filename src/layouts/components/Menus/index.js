@@ -8,7 +8,7 @@ import { isURL } from '@/utils/validate'
 import './index.less'
 
 import { Menu } from 'antd';
-import { Icon, Consumer } from '@/components';
+import { BaseIcon, Consumer } from '@/components';
 import { queryKeysByPath, testMenusData } from './_';
 
 const { SubMenu, Item } = Menu;
@@ -37,7 +37,7 @@ class MainMenu extends PureComponent {
                     <SubMenu
                         key={menuId}
                         text={name}
-                        title={<span><Icon type={icon} />{mode === 'inline' ? <span>{name}</span> : null}</span>}
+                        title={<span><BaseIcon type={icon} />{mode === 'inline' ? <span>{name}</span> : null}</span>}
                     >
                         {subMenu}
                     </SubMenu>
@@ -49,8 +49,9 @@ class MainMenu extends PureComponent {
                             key={url}
                             text={name}
                         >
-                            <Link to={{ pathname: `/iframe`, query, title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }}>
-                                <Icon type={icon}/>
+                            {/* to={{ pathname: `/iframe`, title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }} */}
+                            <Link to={{ pathname: '/iframe', title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }}>
+                                <BaseIcon type={icon}/>
                                 <span>{name}</span>
                             </Link>
                         </Item>
@@ -61,8 +62,8 @@ class MainMenu extends PureComponent {
                         key={url}
                         text={name}
                     >
-                        <Link to={{ pathname: url, query, title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }}>
-                            <Icon type={icon}/>
+                        <Link to={{ pathname: url, title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }}>
+                            <BaseIcon type={icon}/>
                             <span>{name}</span>
                         </Link>
                     </Item>
@@ -86,6 +87,7 @@ class MainMenu extends PureComponent {
         const menus = this.renderMenu(menusData);
         // 当前选中的菜单key
         const { key } = pathState || queryKeysByPath(pathname, menusData);
+        console.log('[key || defaultKey]', [key || defaultKey])
         return (
             <Menu
                 selectedKeys={[key || defaultKey]}

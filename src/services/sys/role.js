@@ -8,6 +8,21 @@ export function getList(params) {
     });
 }
 
+// 菜单
+export function getMenuList() {
+    return request('/sys/menu/list', {
+        method: 'get'
+    });
+}
+
+// 获取选中的ids
+export function getCheckedIds(params) {
+    return request(`/sys/role/info/${params}`, {
+        method: 'get',
+        params
+    });
+}
+
 // 新增修改
 export function update(data) {
     return request(`/sys/role/${data.roleId ? 'update' : 'save'}`, {

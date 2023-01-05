@@ -2,13 +2,13 @@ import { Message } from 'antd';
 import router from 'umi/router';
 import * as api from '@/services/global';
 import { setToken, getToken, setTimeStamp, removeToken } from "@/utils/auth";
-// import { sysDefultPage } from '@/config/platform.config';
+import { sysDefultPage } from '@/config/platform.config';
 
 export default {
     namespace: 'global',
     state: {
         token: '',
-        user:{}
+        user: JSON.parse(localStorage.getItem('user') || '{}')
     },
     subscriptions: {
         // 限制全局提示最大条数为 1 条
@@ -21,26 +21,11 @@ export default {
             if(!getToken()){
                 Message.warning('请登录！')
                 router.replace({
-                    pathname: '/'
+                    pathname: '/login'
                 })
                 return
             }
         },
-        //路由监听
-        // setupHistory({ dispatch, history }) {
-        //     history.listen(location => {
-        //         const { pathname } = location;
-        //         console.log('location', location);
-        //         if (pathname.substring(1)) {
-        //             dispatch({
-        //                 type: 'cacheRoute',
-        //                 payload: {
-        //                     location,
-        //                 },
-        //             });
-        //         }
-        //     });
-        // },
     },
     effects: {
         *login({ payload }, { put, select, call }) {
@@ -53,8 +38,11 @@ export default {
                     token
                 },
             });
+            yield put({
+                type: 'getUserInfo'
+            })
             // 到主页
-            router.push('/')
+            router.replace(sysDefultPage)
         },
         *logout(_, { put, call }) {
             yield call(api.logout);
@@ -66,6 +54,7 @@ export default {
         },
         *getUserInfo(_, { put, call }) {
             const { user } = yield call(api.getUserInfo, { token: getToken() });
+            localStorage.setItem('user', JSON.stringify(user))
             yield put({
                 type: 'save',
                 payload: {

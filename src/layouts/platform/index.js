@@ -1,13 +1,13 @@
 import { PureComponent } from 'react';
 import { connect } from 'dva';
-// import router from 'umi/router';
+import router from 'umi/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
 
 import { Layout, BackTop, Icon } from 'antd';
-import { Exception } from '@/components';
+import { Exception, BaseIcon } from '@/components';
 import Menus from '../components/Menus';
 import Authorized from '../components/Authorized';
 import GlobalPageHeader from '../components/GlobalPageHeader';
@@ -16,6 +16,7 @@ import Logo from '../components/Logo'
 
 import Context from '../Context';
 import { query } from '../constant';
+import { sysDefultPage } from '@/config/platform.config'
 import styles from './index.less';
 
 const { Header, Sider, Content } = Layout;
@@ -68,10 +69,6 @@ class Platform extends PureComponent {
         dispatch({
             type: 'menu/getMenuData',
         })
-        // 获取用户信息
-        dispatch({
-            type: 'global/getUserInfo',
-        })
     }
 
     // componentWillReceiveProps 改为componentDidUpdate后逻辑需要修改
@@ -106,6 +103,8 @@ class Platform extends PureComponent {
         };
     }
     render() {
+
+        console.log('000', this.props)
         // 侧边栏状态
         const { collapsed } = this.state;
         const { activeTabRoute, menusData } = this.props;
@@ -117,6 +116,15 @@ class Platform extends PureComponent {
         // this.setState({
         //     breadcrumbData: [...breadcrumbData]
         // });
+        const triggerIcon = (
+            <div style={{ width: 50 }}>
+                <Icon
+                    className={styles.trigger}
+                    type={collapsed ? 'menu-unfold' : 'menu-fold'}
+                    onClick={this.toggle}
+                />
+            </div>
+        )
 
         const { key } = pathstate || {};
         // 菜单默认key
@@ -157,14 +165,8 @@ class Platform extends PureComponent {
                                     {/* 包含面包屑 */}
                                     <GlobalPageHeader {...this.props}>
                                         {/* 菜单切换和用户信息 */}
-                                        <PageHeader {...this.props}>
-                                            <div style={{ width: 50 }}>
-                                                <Icon
-                                                    className={styles.trigger}
-                                                    type={collapsed ? 'menu-unfold' : 'menu-fold'}
-                                                    onClick={this.toggle}
-                                                />
-                                            </div>
+                                        <PageHeader {...this.props} prefix={triggerIcon}>
+                                            <BaseIcon className={styles.switchIcon} style={{ fontSize: '32px' }} type="screen" onClick={() => router.replace(sysDefultPage)}/>
                                         </PageHeader>
                                     </GlobalPageHeader>
                                 </Header>

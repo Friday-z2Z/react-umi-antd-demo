@@ -14,6 +14,13 @@ export function getSelectTree() {
     });
 }
 
+// 删除
+export function del(payload) {
+    return request(`/sys/menu/delete/${payload}`, {
+        method: 'post'
+    });
+}
+
 // 更新菜单
 export function menuUpdate(data) {
     return request(`/sys/menu/${data.menuId === 0 ? 'save' : 'update'}`, {

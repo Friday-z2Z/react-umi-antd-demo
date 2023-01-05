@@ -2,10 +2,10 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'dva';
 import isEqual from 'lodash/isEqual';
-import { Form, Radio, Input, InputNumber, Popover, Tree, TreeSelect } from 'antd';
+import { Form, Radio, Input, InputNumber, Popover, Tree } from 'antd';
 import { formItemLayout } from '@/config/formLayout.config';
 import { svgIcons } from '@/config/svgIcon.config';
-import { Icon, BaseModal } from '@/components';
+import { BaseIcon, BaseModal } from '@/components';
 import styles from './index.less';
 
 const { TreeNode } = Tree;
@@ -66,7 +66,7 @@ class UpdateModalForm extends React.Component {
         const { props } = node;
         this.props.form.setFieldsValue({
             parentName: props.name,
-            parentId: props.parentId
+            parentId: props.menuId
         })
         this.setState({
             selectedKeys
@@ -148,7 +148,7 @@ class UpdateModalForm extends React.Component {
         const { getFieldValue } = this.props.form;
         const iconsPop = svgIcons.map((item, index) => {
             return (
-                <Icon
+                <BaseIcon
                     className={classnames(styles.icon, [
                         getFieldValue('icon') === item ? styles.iconActive : '',
                     ])}
