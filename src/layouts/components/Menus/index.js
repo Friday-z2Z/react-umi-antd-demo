@@ -49,8 +49,7 @@ class MainMenu extends PureComponent {
                             key={url}
                             text={name}
                         >
-                            {/* to={{ pathname: `/iframe`, title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }} */}
-                            <Link to={{ pathname: '/iframe', title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }}>
+                            <Link to={{ pathname: '/iframe/' + menuId, title:name, state: { ...restState, key:url, menuId, pathtitles: pathtitles.concat(name) } }}>
                                 <BaseIcon type={icon}/>
                                 <span>{name}</span>
                             </Link>
@@ -87,7 +86,6 @@ class MainMenu extends PureComponent {
         const menus = this.renderMenu(menusData);
         // 当前选中的菜单key
         const { key } = pathState || queryKeysByPath(pathname, menusData);
-        console.log('[key || defaultKey]', [key || defaultKey])
         return (
             <Menu
                 selectedKeys={[key || defaultKey]}

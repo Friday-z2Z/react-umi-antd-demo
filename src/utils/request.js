@@ -61,16 +61,20 @@ service.interceptors.response.use(
     response => {
         // dataAxios 是 axios 返回数据中的 data
         const dataAxios = response.data
+        const { responseType } = response.config
         // 这个状态码是和后端约定的 根据开发修改
         const { code, msg } = dataAxios
-        if (code !== 0) {
+        if (code === 0) {
+            return dataAxios
+        } else if (responseType === 'blob') {
+            return response
+        } else {
             message.error(msg)
             if (code === 401) {
                 logout()
             }
             return Promise.reject(dataAxios)
         }
-        return dataAxios
     }, 
     error => {
         if (error && error.response) {

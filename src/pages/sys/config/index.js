@@ -35,11 +35,17 @@ class Config extends React.Component {
 		this.setState({
 			loading: true
 		})
-        API_CONFIG.getList({ ...this.state.dataForm, ...values }).then(res => {
+        const params = {
+            ...this.state.dataForm, ...values
+        }
+        API_CONFIG.getList(params).then(res => {
             this.setState({
                 data: res.page.list || [],
                 total: res.page.totalCount || 0,
-				loading: false
+				loading: false,
+                dataForm: {
+                    ...params
+                }
             });
         });
     };
@@ -110,7 +116,7 @@ class Config extends React.Component {
 
 	render() {
 		const rowSelection = {
-			onChange: (selectedRows) => {
+			onChange: (selectedRowKeys, selectedRows) => {
 				this.setState({
 					selectedRows
 				})

@@ -1,0 +1,61 @@
+.viewModal {
+    height: 600px;
+    display: flex;
+    overflow: hidden;
+    .timeline {
+        width: 200px;
+        height: 100%;
+        padding: 10px 0;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: 0;
+        }
+        .process {
+            &.activeProcess {
+                color: @primary-color;
+            }
+            &:hover {
+                color: @primary-color;
+            }
+            .processTitle {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+            }
+            img {
+                height: 90px;
+                margin-top: 10px;
+                object-fit: contain;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+        }
+    }
+    .content {
+        flex: 1;
+        height: 100%;
+        margin-left: 10px;
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
+            color: rgba(0, 0, 0, .45);
+            font-weight: 700;
+        }
+        .videoInfo {
+            display: flex;
+            margin-bottom: 10px;
+            .player {
+                width: 480px;
+                margin-right: 10px;
+            }
+            .descriptions {
+                flex: 1;
+            }
+        }
+        .rampQueueChart {
+            height: 250px;
+        }
+    }
+}

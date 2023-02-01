@@ -9,15 +9,15 @@ class TrafficFlow extends React.Component {
     }
 
     getData = async () => {
-        // const res = await API_SCREEN.getTrafficFlowStatistical()
-        // const { yesterday: Y = [], lastDay: L = [] } = res?.data || {}
-        // const xData = Y.map(item => item.hour)
-        // const yYdata = Y.map(item => item.count)
-        // const lYdata = L.map(item => item.count)
+        const res = await API_SCREEN.getTrafficFlowStatistical()
+        const { yesterday: Y = [], lastDay: L = [] } = res?.data || {}
+        const xData = Y.map(item => item.hour)
+        const yYdata = Y.map(item => item.count)
+        const lYdata = L.map(item => item.count)
 
-        const xData = [1, 2, 3];
-        const yYdata = [1, 2, 3];
-        const lYdata = [3, 2, 1];
+        // const xData = [1, 2, 3];
+        // const yYdata = [1, 2, 3];
+        // const lYdata = [3, 2, 1];
         this.initChart(xData, yYdata, lYdata)
     };
 
@@ -63,6 +63,11 @@ class TrafficFlow extends React.Component {
                 top: '100px',
                 containLabel: true,
             },
+            dataZoom: [
+                {
+                    type: 'inside',
+                },
+            ],
             xAxis: [
                 {
                     type: 'category',

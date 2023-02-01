@@ -139,7 +139,9 @@ class Screen extends React.Component {
                             <TrafficFlow />
                             <div className={styles.rest}>
                                 <Row gutter={20}>
-                                    <Col span={12}></Col>
+                                    <Col span={12}>
+                                        {/* 车流量 */}
+                                    </Col>
                                     <Col span={12}>
                                         <LargeFlow />
                                     </Col>
@@ -147,6 +149,8 @@ class Screen extends React.Component {
                             </div>
                         </Col>
                     </Row>
+                    {/* 实时缩略图进度条 */}
+                    {/* 拥堵情况展示 */}
                 </Content>
             </Layout>
         )

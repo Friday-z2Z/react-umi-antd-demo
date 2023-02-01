@@ -17,9 +17,11 @@ export default {
             history.listen(location => {
                 // 获取存储的扁平化菜单 筛选与路由匹配的
                 const cacheMenusData = JSON.parse(localStorage.getItem('menusData'))
-                const matchRoute =  (cacheMenusData || []).filter(item => item.pathname === location.pathname)[0] || location
+                const matchRoute =  (cacheMenusData || []).filter(item => {
+                    return item.pathname === location.pathname
+                })[0] || location
                 const { pathname, state } = matchRoute;
-                console.log('location', location, matchRoute)
+                console.log('location', location, 'matchRoute', matchRoute)
                 if (pathname && pathname.substring(1) && state && state.key) {
                     dispatch({
                         type: 'cacheRoute',
@@ -35,26 +37,26 @@ export default {
     effects: {
         //参数为空用'_'标记
         *getMenuData(_, { call, put, select }) {
-            let menusData = yield select(({ menu }) => menu.menusData);
-            if (!(menusData && menusData.length > 0)) {
-                const { menuList = []} = yield call(api.getMenuData, {});
-                // 加入不在菜单的默认路由
-                // menuList.unshift(sysDefultPage)
-                //orginalData menu.config  自行配置的菜单
-                // 以下根据具体需求修改
-                const { menusData, diffMenuData } = munesFilter(menuList, menuPermission);
-                //可在 munesFilter 中直接返回
-                const flattenMenuData = flattenMenu(menuList);
-                localStorage.setItem('menusData', JSON.stringify(flattenMenuData))
-                yield put({
-                    type: 'save',
-                    payload: {
-                        menusData,
-                        diffMenuData,
-                        flattenMenuData,
-                    }
-                });
-            }
+            // let menusData = yield select(({ menu }) => menu.menusData);
+            // if (!(menusData && menusData.length > 0)) {
+            const { menuList = []} = yield call(api.getMenuData, {});
+            // 加入不在菜单的默认路由
+            // menuList.unshift(sysDefultPage)
+            //orginalData menu.config  自行配置的菜单
+            // 以下根据具体需求修改
+            const { menusData, diffMenuData } = munesFilter(menuList, menuPermission);
+            //可在 munesFilter 中直接返回
+            const flattenMenuData = flattenMenu(menuList);
+            localStorage.setItem('menusData', JSON.stringify(flattenMenuData))
+            yield put({
+                type: 'save',
+                payload: {
+                    menusData,
+                    diffMenuData,
+                    flattenMenuData,
+                }
+            });
+            // }
         },
         // 点击菜单路由变化的时候存储路由
         *cacheRoute({ payload: { matchRoute } }, { put, select }) {

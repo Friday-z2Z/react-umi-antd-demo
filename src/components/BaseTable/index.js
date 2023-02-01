@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'antd';
+import isEqual from 'lodash/isEqual';
 import { getTableScroll } from '@/utils/_';
 
 // import styles from './index.less'
@@ -8,15 +9,37 @@ import { getTableScroll } from '@/utils/_';
 class BaseTable extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        const { extraHeight = 0 } = props
+        this.state = {
+            H: getTableScroll({ extraHeight })
+        };
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.reloadTable)
+    }
+
+    componentDidUpdate(preProps) {
+        const { dataSource } = this.props;
+        if (!isEqual(dataSource, preProps.dataSource)) {
+            this.reloadTable();
+        }
+    }
+
+    reloadTable = () => {
+        const { extraHeight = 0 } = this.props
+        this.setState({
+            H: getTableScroll({ extraHeight })
+        })
     }
 
     render() {
-        
-        const { extraHeight = 0 } = this.props;
+        // const { extraHeight = 0 } = this.props;
+        const { H } = this.state
         return (
             <Table
-                scroll={{ y: getTableScroll({ extraHeight }) }}
+                scroll={{ y: H }}
+                pagination={false}
                 {...this.props}
             >
                 {this.props.children}

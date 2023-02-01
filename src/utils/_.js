@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 import isEqual from 'lodash/isEqual';
+import { isURL } from './validate'
 /**
  * more https://segmentfault.com/a/1190000022736837
  */
@@ -21,7 +22,7 @@ const _flattenMenu = (menuData = [], pathtitles = []) => {
             routes.push({
                 ...item,
                 key: menuId,
-                pathname: item.url,
+                pathname: isURL(url) ? '/iframe/' + menuId : url,
                 state: {
                     key: url,
                     pathtitles: pathtitles.concat(name),

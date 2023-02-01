@@ -39,11 +39,17 @@ class Role extends React.Component {
         this.setState({
             loading: true,
         });
-        API_ROLE.getList({ ...this.state.dataForm, ...values }).then(res => {
+        const params = {
+            ...this.state.dataForm, ...values
+        }
+        API_ROLE.getList(params).then(res => {
             this.setState({
                 data: res.page.list || [],
                 total: res.page.totalCount || 0,
                 loading: false,
+                dataForm: {
+                    ...params
+                }
             });
         });
     };
@@ -127,7 +133,7 @@ class Role extends React.Component {
 
     render() {
         const rowSelection = {
-            onChange: (selectedRows) => {
+            onChange: (selectedRowKeys, selectedRows) => {
                 this.setState({
                     selectedRows,
                 });

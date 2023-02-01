@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'dva';
 import { Form, Input, Select } from 'antd';
 import { BaseModal } from '@/components'
 import { formItemLayout } from '@/config/formLayout.config';
@@ -124,6 +123,4 @@ class UpdateModalForm extends React.Component {
 	}
 }
 const UpdateModal = Form.create()(UpdateModalForm);
-export default connect(({ role }) => ({
-	...role
-}))(UpdateModal)
+export default UpdateModal

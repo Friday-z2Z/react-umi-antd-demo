@@ -1,11 +1,20 @@
 :global {
-    .ant-btn {
-        & ~ .ant-btn {
-            margin-left: 8px;
-        }
-    }
     // table
     .ant-table {
+        .ant-table-fixed {
+            th {
+                background: @base-color;
+                color: @anticolor;
+            }
+            border-radius: 4px 4px 0 0;
+        }
+        .ant-table-thead {
+            th {
+                background: @base-color;
+                color: @anticolor;
+            }
+            border-radius: 4px 4px 0 0;
+        }
         .ant-table-header {
             background: @base-color;
             border-radius: 4px 4px 0 0;
@@ -13,7 +22,7 @@
                 > tr {
                     > th {
                         background: @base-color;
-                        color: #fff;
+                        color: @anticolor;
                     }
                 }
             }
@@ -41,7 +50,7 @@
     .ant-tabs {
         .ant-tabs-tab-prev, .ant-tabs-tab-next {
             background: @base-color;
-            color: #fff;
+            color: @anticolor;
             &:hover {
                 color: @primary-color;
             }
@@ -56,7 +65,7 @@
     // modal
     .ant-modal {
         .ant-modal-close {
-            color: #fff;
+            color: @anticolor;
             &:hover {
                 color: @primary-color;
             }
@@ -64,7 +73,7 @@
         .ant-modal-header {
             background: @base-color;
             .ant-modal-title {
-                color: #fff;
+                color: @anticolor;
             }
         }
     }

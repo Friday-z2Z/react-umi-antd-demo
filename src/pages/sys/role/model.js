@@ -26,7 +26,10 @@ export default {
                 const { role: { menuIdList = [] } } = yield call(API_ROLE.getCheckedIds, payload.roleId)
                 L = menuIdList
             }
-            L.splice(L.indexOf(defaultId), 1)
+            const idx = L.indexOf(defaultId)
+            if (idx > -1) {
+                L.splice(idx, L.length - idx)
+            }
             L = L.map(item => item.toString())
             yield put({
                 type:'save',

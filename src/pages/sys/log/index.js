@@ -45,11 +45,17 @@ class Log extends React.Component {
 		this.setState({
 			loading: true
 		})
-        API_LOG.getList({ ...this.state.dataForm, ...values }).then(res => {
+        const params = {
+            ...this.state.dataForm, ...values
+        }
+        API_LOG.getList(params).then(res => {
             this.setState({
                 data: res.page.list || [],
                 total: res.page.totalCount || 0,
-				loading: false
+				loading: false,
+                dataForm: {
+                    ...params
+                }
             });
         });
     };

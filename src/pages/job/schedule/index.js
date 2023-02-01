@@ -11,7 +11,7 @@ import LogModal from './logModal'
 const { confirm } = Modal;
 const { Column } = Table;
 
-class Config extends React.Component {
+class Schedule extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -37,11 +37,17 @@ class Config extends React.Component {
         this.setState({
             loading: true,
         });
-        API_SCHEDULE.getList({ ...this.state.dataForm, ...values }).then(res => {
+        const params = {
+            ...this.state.dataForm, ...values
+        }
+        API_SCHEDULE.getList(params).then(res => {
             this.setState({
                 data: res.page.list || [],
                 total: res.page.totalCount || 0,
                 loading: false,
+                dataForm: {
+                    ...params
+                }
             });
         });
     };
@@ -365,5 +371,5 @@ class Config extends React.Component {
         );
     }
 }
-const ConfigWrapper = Form.create()(Config);
-export default ConfigWrapper;
+const ScheduleWrapper = Form.create()(Schedule);
+export default ScheduleWrapper;

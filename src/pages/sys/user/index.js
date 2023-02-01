@@ -4,13 +4,13 @@
 
 import React from 'react';
 import { BasePanel, BaseTable, BasePagination } from '@/components';
-import { Modal, Form, Input, Button, Table, Divider, Tag } from 'antd';
+import { Modal, Form, Input, Button, Table, Divider, Tag, message } from 'antd';
 import * as API_USER from '@/services/sys/user';
-// import UpdateModal from './updateModal';
+import UpdateModal from './updateModal';
 const { confirm } = Modal;
 const { Column } = Table;
 
-class Config extends React.Component {
+class User extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -21,7 +21,6 @@ class Config extends React.Component {
                 pageSize: 10,
             },
             loading: false,
-            modalForm: {},
             visible: false,
             selectedRows: [],
         };
@@ -35,11 +34,17 @@ class Config extends React.Component {
         this.setState({
             loading: true,
         });
-        API_USER.getList({ ...this.state.dataForm, ...values }).then(res => {
+        const params = {
+            ...this.state.dataForm, ...values
+        }
+        API_USER.getList(params).then(res => {
             this.setState({
                 data: res.page.list || [],
                 total: res.page.totalCount || 0,
                 loading: false,
+                dataForm: {
+                    ...params
+                }
             });
         });
     };
@@ -81,42 +86,39 @@ class Config extends React.Component {
 
     beforeOpen = (record = {}) => {
         this.setState({
-            modalForm: { ...record },
             visible: true,
+        }, () => {
+            this.updateModal.getDetail(record.userId)
         });
     };
 
     handleDel = rows => {
-        // const that = this;
-        const jobIds = rows.map(item => item.jobId);
+        const that = this;
+        const userIds = rows.map(item => item.userId);
         confirm({
-            title: `确定对【id=${jobIds.join(',')}】进行【删除】操作吗？`,
+            title: `确定对【id=${userIds.join(',')}】进行【删除】操作吗？`,
             centered: true,
             onOk() {
-                // API_USER.del({ jobIds }).then(() => {
-                //     message.success('删除成功');
-                //     that.handleGetList();
-                // });
+                API_USER.del(userIds).then(() => {
+                    message.success('删除成功');
+                    that.handleGetList();
+                });
             },
         });
-    };
-
-    handleOk = async () => {
-        // const values = await this.updateModal.handleSubmit();
-        // API_USER.update(values).then(res => {
-        //     message.success(`${values.jobId ? '修改' : '新增'}成功`);
-        //     this.handleCancel();
-        //     this.handleGetList();
-        // });
     };
 
     handleCancel = () => {
         this.setState({ visible: false });
     };
 
+    handleOk = () => {
+        this.handleCancel()
+        this.handleGetList()
+    }
+
     render() {
         const rowSelection = {
-            onChange: (selectedRows) => {
+            onChange: (selectedRowKeys, selectedRows) => {
                 this.setState({
                     selectedRows,
                 });
@@ -127,12 +129,10 @@ class Config extends React.Component {
         } = this.props;
         const {
             data,
-            // visible,
-            // logVisible,
+            visible,
             total,
             loading,
             selectedRows,
-            // modalForm,
             dataForm: { pageSize, page },
         } = this.state;
         return (
@@ -243,17 +243,16 @@ class Config extends React.Component {
                     onChange={this.handlePageChange}
                     onShowSizeChange={this.handleShowSizeChange}
                 ></BasePagination>
-                {/* <UpdateModal
+                <UpdateModal
                     maskClosable={false}
                     visible={visible}
-                    onOk={this.handleOk}
                     onCancel={this.handleCancel}
+                    onOk={this.handleOk}
                     onRef={node => (this.updateModal = node)}
-                    dataForm={modalForm}
-                ></UpdateModal> */}
+                ></UpdateModal>
             </>
         );
     }
 }
-const ConfigWrapper = Form.create()(Config);
-export default ConfigWrapper;
+const UserWrapper = Form.create()(User);
+export default UserWrapper;

@@ -62,6 +62,7 @@ class MenuConfig extends React.Component {
         const values = await this.updateModal.handleSubmit();
         API_MENU.menuUpdate(values).then(()=>{
             message.success(`${values.menuId === 0?'新增':'修改'}成功`)
+            this.getMenu()
             this.handleCancel()
             this.getMenuList()
         })
@@ -93,10 +94,19 @@ class MenuConfig extends React.Component {
             onOk() {
                 API_MENU.del(record.menuId).then(() => {
 					message.success('删除成功')
+                    that.getMenu()
                     that.getMenuList();
                 });
             },
         });
+    }
+
+    // 获取菜单
+    getMenu = () => {
+        // 获取菜单列表
+        this.props.dispatch({
+            type: 'menu/getMenuData',
+        })
     }
 
     render() {

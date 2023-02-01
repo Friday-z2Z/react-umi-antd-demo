@@ -29,3 +29,12 @@ export function isPhone(s) {
 export function isURL(s) {
     return /^http[s]?:\/\/.*/.test(s);
 }
+
+/**
+ * 密码设置
+ * 
+ */
+
+export function isPsw(s) {
+    return /^(?![A-Za-z0-9]+$)(?![a-z0-9\W]+$)(?![A-Za-z\W]+$)(?![A-Z0-9\W]+$)[a-zA-Z0-9\W]{8,14}$/.test(s);
+}

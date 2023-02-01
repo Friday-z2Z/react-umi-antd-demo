@@ -1,5 +1,6 @@
 import { resolve } from "path";
-import _default from './src/theme.config/default';
+import _default from './src/theme.config/default'; // 不是颜色主题
+// import * as theme from './src/theme.config/default-theme'; // 默认
 // import * as theme from './src/theme.config/tiffany'; // 蒂芙尼主题
 // import * as theme from './src/theme.config/dark-night-red'; // 暗夜红主题
 import * as theme from './src/theme.config/young'; // 黄绿青春主题
@@ -75,8 +76,9 @@ export default {
         //     pathRewrite: { '^/api': '/' },
         // },
         '/api': {
-            target: 'http://192.168.2.24:9105',
-            // target: 'http://192.168.1.174:48081',
+            // target: 'http://192.168.2.24:9105',
+            // target: 'http://192.168.1.77:9100',
+            target: 'http://192.168.1.26:59105',
             changeOrigin: true,
             pathRewrite: { '^/api': '/api' },
         }

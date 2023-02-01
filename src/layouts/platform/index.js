@@ -1,4 +1,5 @@
 import { PureComponent } from 'react';
+import { AliveScope } from 'react-activation'
 import { connect } from 'dva';
 import router from 'umi/router';
 import { ContainerQuery } from 'react-container-query';
@@ -37,7 +38,7 @@ const _getKey = (pathname) => {
 /**
  * 权限页，当没有权限时跳转403页面
  */
-const Exception403 = <Exception
+const Exception404 = <Exception
     type={404}
     backText={'返回首页'}
     title={'404'}
@@ -103,8 +104,6 @@ class Platform extends PureComponent {
         };
     }
     render() {
-
-        console.log('000', this.props)
         // 侧边栏状态
         const { collapsed } = this.state;
         const { activeTabRoute, menusData } = this.props;
@@ -173,7 +172,10 @@ class Platform extends PureComponent {
                                 {/* 内容区域 */}
                                 <Content id="backTop" className={`${styles.content} scrollbar`} >
                                     {/* 路由权限校验 */}
-                                    <Authorized noMatch={Exception403} {...this.props} />
+                                    {/* AliveScope 缓存入口 */}
+                                    <AliveScope>
+                                        <Authorized noMatch={Exception404} {...this.props} />
+                                    </AliveScope>
                                 </Content>
                                 {/* 页脚 */}
                                 {/* ... */}

@@ -1,11 +1,13 @@
 /**
- * title: 系统日志
+ * title: 收费站管理
  */
 
 import React from 'react';
 import { BasePanel, BaseTable, BasePagination } from '@/components';
 import * as API_TOLL from '@/services/sys/toll';
+import * as API_COMMON from '@/services';
 import UpdateModal from './updateModal';
+import ParamModal from './paramModal';
 import { Form, message, Button, Table, Divider, Select } from 'antd';
 
 const { Column } = Table;
@@ -32,7 +34,8 @@ class Toll extends React.Component {
             options: {
                 cityOptions: [],
                 roadOptions: []
-            }
+            },
+            paramVisible: false,
         };
     }
 
@@ -43,15 +46,15 @@ class Toll extends React.Component {
     }
 
     getStationOption = async() => {
-        const { data = [] } = await API_TOLL.getStationOption({})
+        const { data = [] } = await API_COMMON.getStation({})
         this.setState({
             stationOptions: data
         })
     }
 
     getCityRoad = async() => {
-        const { data: city = [] } = await API_TOLL.getCity()
-        const { data: road = [] } = await API_TOLL.getRoad()
+        const { data: city = [] } = await API_COMMON.getCity()
+        const { data: road = [] } = await API_COMMON.getRoad()
         this.setState({
             options: {
                 cityOptions: city,
@@ -74,11 +77,17 @@ class Toll extends React.Component {
 			loading: true
 		})
         this.getStationOption()
-        API_TOLL.getList({ ...this.state.dataForm, dataform: { ...values }}).then(res => {
+        const formParams = Object.keys(values).length > 0 ? { dataform: values } : {}
+        const params = { ...this.state.dataForm, ...formParams }
+        API_TOLL.getList(params).then(res => {
             this.setState({
                 data: res.data.list || [],
                 total: res.data.totalCount || 0,
-				loading: false
+				loading: false,
+                dataForm: {
+                    ...this.state.dataForm,
+                    ...params
+                }
             });
         });
     };
@@ -112,7 +121,7 @@ class Toll extends React.Component {
 
     handleOk = async () => {
         const values = await this.updateModal.handleSubmit();
-        await values.id ? API_TOLL.save(values) : API_TOLL.update(values)
+        values.id ? await API_TOLL.save(values) : await API_TOLL.update(values)
         message.success(`${values.id?'新增':'修改'}成功`)
         this.handleCancel();
         this.handleGetList();
@@ -121,6 +130,14 @@ class Toll extends React.Component {
     handleCancel = () => {
         this.setState({ visible: false });
     };
+
+    handleParam = async(record) => {
+        this.setState({
+            paramVisible: true,
+        }, () => {
+            this.paramModal.getDetail(record.tollId)
+        })
+    }
 
     render() {
         const {
@@ -134,7 +151,8 @@ class Toll extends React.Component {
             stationOptions,
             visible,
             modalForm,
-            options
+            options,
+            paramVisible,
         } = this.state;
         return (
             <>
@@ -142,7 +160,7 @@ class Toll extends React.Component {
                     <Form layout="inline" onSubmit={this.handleSubmit} autoComplete="off">
                         <Form.Item>
                             {getFieldDecorator('tollId')(
-                                <Select style={{ width: 200 }} allowClear placeholder="请选择收费站">
+                                <Select style={{ width: 160 }} allowClear placeholder="请选择收费站">
                                     {
                                         stationOptions.map(item => {
                                             return <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>
@@ -153,7 +171,6 @@ class Toll extends React.Component {
                         </Form.Item>
                         <Form.Item>
                             <Button
-                                type="primary"
                                 htmlType="submit"
                                 disabled={hasErrors(getFieldsError())}
                             >
@@ -174,18 +191,16 @@ class Toll extends React.Component {
                     pagination={false}
 					extraHeight={52}
                 >
-                    <Column title="编号" width="200px" dataIndex="tollId" key="tollId" />
+                    <Column title="编号" align="center" dataIndex="tollId" key="tollId" />
                     <Column
                         title="名称"
                         align="center"
-                        width="160px"
                         dataIndex="tollName"
                         key="tollName"
                     />
                     <Column
                         title="所属地市"
                         align="center"
-                        width="160px"
                         dataIndex="cityName"
                         key="cityName"
                     />
@@ -207,7 +222,7 @@ class Toll extends React.Component {
                                     修改
                                 </Button>
                                 <Divider type="vertical" />
-                                <Button type="link">
+                                <Button type="link" onClick={e => this.handleParam(record, e)}>
                                     对接参数
                                 </Button>
                             </span>
@@ -230,6 +245,12 @@ class Toll extends React.Component {
                     dataForm={modalForm}
                     options={options}
 				></UpdateModal>
+                <ParamModal
+                    maskClosable={false}
+                    visible={paramVisible}
+                    onCancel={() => this.setState({ paramVisible: false })}
+					onRef={node => (this.paramModal = node)}
+                ></ParamModal>
             </>
         );
     }

@@ -10,7 +10,7 @@ module.exports = {
     // 是否开启菜单权限校验 trur原始菜单与返回菜单比对形成权限菜单 false原始菜单
     menuPermission: true,
     defaultLoginName:'admin',
-    defaultLoginPsw:'123456',
+    defaultLoginPsw:'Admin12345~',
     pageNum: 1,
     // table默认一页条数
     pageSize: 10,

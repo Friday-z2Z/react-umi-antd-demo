@@ -26,11 +26,17 @@ class Log extends React.Component {
         this.setState({
             loading: true,
         });
-        API_SCHEDULE.getLogList({ ...this.state.dataForm, ...values }).then(res => {
+		const params = {
+			...this.state.dataForm, ...values
+		}
+        API_SCHEDULE.getLogList(params).then(res => {
             this.setState({
                 data: res.page.list || [],
                 total: res.page.totalCount || 0,
                 loading: false,
+				dataForm: {
+					...params
+				}
             });
         });
     };
@@ -110,7 +116,7 @@ class Log extends React.Component {
 								)}
 							</Form.Item>
 							<Form.Item>
-								<Button htmlType="submit">
+								<Button type="primary" htmlType="submit">
 									查 询
 								</Button>
 							</Form.Item>
