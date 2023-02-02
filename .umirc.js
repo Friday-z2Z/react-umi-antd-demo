@@ -76,9 +76,9 @@ export default {
         //     pathRewrite: { '^/api': '/' },
         // },
         '/api': {
-            // target: 'http://192.168.2.24:9105',
+            target: 'http://192.168.2.24:9105',
             // target: 'http://192.168.1.77:9100',
-            target: 'http://192.168.1.26:59105',
+            // target: 'http://192.168.1.26:59105',
             changeOrigin: true,
             pathRewrite: { '^/api': '/api' },
         }
