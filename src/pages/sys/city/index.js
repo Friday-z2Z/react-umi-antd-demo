@@ -222,7 +222,7 @@ class City extends React.Component {
                                     修改
                                 </Button>
                                 <Divider type="vertical" />
-                                <Button type="link" onClick={e => this.handleDel(record, e)}>
+                                <Button type="link" style={{ color: '#ff4d4f' }} onClick={e => this.handleDel(record, e)}>
                                     删除
                                 </Button>
                             </span>
